@@ -3,8 +3,8 @@ import { globalHistory } from "@reach/router";
 import { Zoom, Clock, Slide } from "mdx-deck";
 import useSpring from "./use-spring";
 import { getTextFromNotes } from "./notes";
-import { Global, css } from "@emotion/core";
-import { Swipeable } from "react-swipeable";
+import { Global, css } from "@emotion/react";
+import { useSwipeable } from "react-swipeable";
 import { useThemeUI } from "theme-ui";
 
 const Teleprompter = ({ index, children, ...rest }) => {
@@ -18,7 +18,9 @@ const Teleprompter = ({ index, children, ...rest }) => {
 
   React.useEffect(() => {
     const self = ref.current;
+    if (!self) return;
     const child = self.children[index + 1];
+    if (!child) return;
     const childTop = child.offsetTop - self.offsetTop;
     const childHeight = child.getBoundingClientRect().height;
     const selfHeight = self.getBoundingClientRect().height;
@@ -28,7 +30,9 @@ const Teleprompter = ({ index, children, ...rest }) => {
   }, [index]);
 
   React.useLayoutEffect(() => {
-    ref.current.scrollTop = scrollTop;
+    if (ref.current) {
+      ref.current.scrollTop = scrollTop;
+    }
   }, [scrollTop]);
 
   return (
@@ -67,7 +71,14 @@ function MobilePresenter({
   const windowHeight = window.innerHeight;
   const separatorHeight = 6;
   const notesHeight = windowHeight - deckHeight - separatorHeight;
-  const { colors } = useThemeUI();
+  const { theme } = useThemeUI();
+  const colors = theme.colors || {};
+  const swipeHandlers = useSwipeable({
+    onSwipedRight: previous,
+    onSwipedLeft: next,
+    onSwipedDown: previous,
+    onSwipedUp: next
+  });
 
   const progress = (100 * (index + 1)) / slides.length;
   return (
@@ -116,13 +127,7 @@ function MobilePresenter({
         />
       </div>
       <div style={{ height: notesHeight }}>
-        <Swipeable
-          onSwipedRight={previous}
-          onSwipedLeft={next}
-          onSwipedDown={previous}
-          onSwipedUp={next}
-          style={{ height: "100%" }}
-        >
+        <div {...swipeHandlers} style={{ height: "100%" }}>
           <Teleprompter
             index={noteIndex}
             style={{
@@ -141,7 +146,7 @@ function MobilePresenter({
               </span>
             ))}
           </Teleprompter>
-        </Swipeable>
+        </div>
       </div>
     </div>
   );
@@ -284,8 +289,11 @@ export const Presenter = props => {
 };
 
 function useWindowWidth() {
-  const [width, changeWidth] = React.useState(window && window.innerWidth);
+  const [width, changeWidth] = React.useState(
+    typeof window === "undefined" ? 0 : window.innerWidth
+  );
   React.useEffect(() => {
+    if (typeof window === "undefined") return;
     const handleResize = () => changeWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

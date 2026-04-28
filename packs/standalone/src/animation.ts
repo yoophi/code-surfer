@@ -303,10 +303,14 @@ function getZoom(step: Maybe<Step>, dimensions: Dimensions): number | null {
   const contentHeight = step.focusCount * lineHeight;
   const availableHeight =
     containerHeight - Math.max(paddingBottom, paddingTop) * 2;
-  const yZoom = availableHeight / contentHeight;
+  const yZoom =
+    contentHeight > 0 && availableHeight > 0 ? availableHeight / contentHeight : 1;
 
   // if there are lines that are too long for the container
-  const xZoom = (0.9 * containerWidth) / contentWidth;
+  const xZoom =
+    contentWidth > 0 && containerWidth > 0
+      ? (0.9 * containerWidth) / contentWidth
+      : 1;
 
   return Math.min(yZoom, 1, xZoom);
 }

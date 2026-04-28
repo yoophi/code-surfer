@@ -1,19 +1,19 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Parsing steps adds default focus 1`] = `
-Object {
+exports[`Parsing steps > adds default focus 1`] = `
+{
   "maxLineCount": 4,
   "showNumbers": false,
-  "steps": Array [
-    Object {
-      "focus": Object {
+  "steps": [
+    {
+      "focus": {
         "0": true,
         "1": true,
         "2": true,
       },
       "focusCenter": 1.5,
       "focusCount": 3,
-      "lines": Array [
+      "lines": [
         0,
         1,
         2,
@@ -22,14 +22,14 @@ Object {
       "subtitle": undefined,
       "title": undefined,
     },
-    Object {
-      "focus": Object {
+    {
+      "focus": {
         "2": true,
         "3": true,
       },
       "focusCenter": 3,
       "focusCount": 2,
-      "lines": Array [
+      "lines": [
         0,
         2,
         3,
@@ -40,8 +40,8 @@ Object {
       "title": undefined,
     },
   ],
-  "tokens": Array [
-    Array [
+  "tokens": [
+    [
       "console",
       ".",
       "log",
@@ -49,7 +49,7 @@ Object {
       "1",
       ")",
     ],
-    Array [
+    [
       "console",
       ".",
       "log",
@@ -57,7 +57,7 @@ Object {
       "2",
       ")",
     ],
-    Array [
+    [
       "console",
       ".",
       "log",
@@ -65,10 +65,10 @@ Object {
       "3",
       ")",
     ],
-    Array [
+    [
       "​",
     ],
-    Array [
+    [
       "console",
       ".",
       "log",
@@ -78,8 +78,8 @@ Object {
       ";",
     ],
   ],
-  "types": Array [
-    Array [
+  "types": [
+    [
       "plain",
       "punctuation",
       "function",
@@ -87,7 +87,7 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
       "punctuation",
       "function",
@@ -95,7 +95,7 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
       "punctuation",
       "function",
@@ -103,10 +103,10 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
     ],
-    Array [
+    [
       "plain",
       "punctuation",
       "function",
@@ -119,19 +119,19 @@ Object {
 }
 `;
 
-exports[`Parsing steps works 1`] = `
-Object {
+exports[`Parsing steps > works 1`] = `
+{
   "maxLineCount": 3,
   "showNumbers": false,
-  "steps": Array [
-    Object {
-      "focus": Object {
+  "steps": [
+    {
+      "focus": {
         "0": true,
         "1": true,
       },
       "focusCenter": 1,
       "focusCount": 2,
-      "lines": Array [
+      "lines": [
         0,
         1,
         2,
@@ -140,9 +140,9 @@ Object {
       "subtitle": undefined,
       "title": undefined,
     },
-    Object {
-      "focus": Object {
-        "0": Array [
+    {
+      "focus": {
+        "0": [
           2,
           3,
           4,
@@ -151,7 +151,7 @@ Object {
       },
       "focusCenter": 1,
       "focusCount": 2,
-      "lines": Array [
+      "lines": [
         0,
         2,
       ],
@@ -160,8 +160,8 @@ Object {
       "title": undefined,
     },
   ],
-  "tokens": Array [
-    Array [
+  "tokens": [
+    [
       "c",
       "o",
       "n",
@@ -177,7 +177,7 @@ Object {
       "1",
       ")",
     ],
-    Array [
+    [
       "console",
       ".",
       "log",
@@ -185,7 +185,7 @@ Object {
       "2",
       ")",
     ],
-    Array [
+    [
       "console",
       ".",
       "log",
@@ -194,8 +194,8 @@ Object {
       ")",
     ],
   ],
-  "types": Array [
-    Array [
+  "types": [
+    [
       "plain",
       "plain",
       "plain",
@@ -211,7 +211,7 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
       "punctuation",
       "function",
@@ -219,7 +219,7 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
       "punctuation",
       "function",
@@ -231,20 +231,20 @@ Object {
 }
 `;
 
-exports[`Parsing steps works with empty diff 1`] = `
-Object {
+exports[`Parsing steps > works with empty diff 1`] = `
+{
   "maxLineCount": 3,
   "showNumbers": false,
-  "steps": Array [
-    Object {
-      "focus": Object {
+  "steps": [
+    {
+      "focus": {
         "0": true,
         "1": true,
         "2": true,
       },
       "focusCenter": 1.5,
       "focusCount": 3,
-      "lines": Array [
+      "lines": [
         0,
         1,
         2,
@@ -253,15 +253,15 @@ Object {
       "subtitle": undefined,
       "title": undefined,
     },
-    Object {
-      "focus": Object {
+    {
+      "focus": {
         "0": true,
         "1": true,
         "2": true,
       },
       "focusCenter": 1.5,
       "focusCount": 3,
-      "lines": Array [
+      "lines": [
         0,
         1,
         2,
@@ -271,8 +271,8 @@ Object {
       "title": undefined,
     },
   ],
-  "tokens": Array [
-    Array [
+  "tokens": [
+    [
       "console",
       ".",
       "log",
@@ -280,7 +280,7 @@ Object {
       "1",
       ")",
     ],
-    Array [
+    [
       "console",
       ".",
       "log",
@@ -288,7 +288,7 @@ Object {
       "2",
       ")",
     ],
-    Array [
+    [
       "console",
       ".",
       "log",
@@ -297,8 +297,8 @@ Object {
       ")",
     ],
   ],
-  "types": Array [
-    Array [
+  "types": [
+    [
       "plain",
       "punctuation",
       "function",
@@ -306,7 +306,7 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
       "punctuation",
       "function",
@@ -314,7 +314,7 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
       "punctuation",
       "function",

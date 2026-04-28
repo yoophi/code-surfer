@@ -7,12 +7,12 @@ For internal use by code-surfer, but you can use it if you want. Just be aware t
 Watch and build code:
 
 ```bash
-$ yarn
-$ yarn workspace @code-surfer/step-parser start
+$ pnpm install
+$ pnpm --filter @code-surfer/step-parser start
 ```
 
 Watch tests:
 
 ```bash
-$ yarn workspace @code-surfer/step-parser test:watch
+$ pnpm --filter @code-surfer/step-parser test:watch
 ```

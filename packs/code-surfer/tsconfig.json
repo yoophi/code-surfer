@@ -1,7 +1,7 @@
 {
   "include": ["src"],
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2019",
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "allowJs": true,
@@ -9,10 +9,11 @@
     "strictNullChecks": false,
     "importHelpers": true,
     "sourceMap": true,
-    "rootDir": "./",
+    "rootDir": "./src",
     "strict": false,
     "noImplicitAny": false,
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
       "*": ["src/*", "node_modules/*"]

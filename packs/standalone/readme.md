@@ -9,18 +9,18 @@ No docs, but you can check the code in `sites/book/`.
 Watch and build code:
 
 ```bash
-$ yarn
-$ yarn workspace @code-surfer/standalone start
+$ pnpm install
+$ pnpm --filter @code-surfer/standalone start
 ```
 
 Run storybook:
 
 ```bash
-$ yarn workspace book start
+$ pnpm --filter book start
 ```
 
 Watch tests:
 
 ```bash
-$ yarn workspace @code-surfer/standalone test:watch
+$ pnpm --filter @code-surfer/standalone test:watch
 ```

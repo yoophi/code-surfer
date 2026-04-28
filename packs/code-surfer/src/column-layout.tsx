@@ -90,7 +90,9 @@ function Subtitle({ text }) {
 
 function getColumnsFromChildren(children, sizes = []) {
   const columns = [];
-  const stepElements = React.Children.toArray(children);
+  const stepElements = React.Children.toArray(children).filter(
+    React.isValidElement
+  ) as React.ReactElement<any>[];
 
   if (stepElements.length === 0) {
     throw Error("No <Step/> found inside <CodeSurferColumns/>.");
@@ -98,7 +100,7 @@ function getColumnsFromChildren(children, sizes = []) {
   stepElements.forEach((stepElement, stepIndex) => {
     React.Children.toArray(stepElement.props.children).forEach(
       (cellElement, columnIndex) => {
-        if (!cellElement || !cellElement.props) {
+        if (!React.isValidElement(cellElement)) {
           throw Error(
             "Invalid element inside <Step/>. Make sure to add empty lines (no spaces) before and after each element."
           );
@@ -131,7 +133,9 @@ function getColumnsFromChildren(children, sizes = []) {
   const titles = stepElements.map(stepElement => stepElement.props.title);
   const subtitles = stepElements.map(stepElement => stepElement.props.subtitle);
   const notesElements = stepElements.map(stepElement => {
-    const stepChildren = React.Children.toArray(stepElement.props.children);
+    const stepChildren = React.Children.toArray(
+      stepElement.props.children
+    ).filter(React.isValidElement) as React.ReactElement<any>[];
     const notesElement = stepChildren.find(
       element => element.props && element.props.originalType === Notes
     );

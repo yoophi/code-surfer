@@ -20,35 +20,60 @@ export function CodeSurfer({
   maxLineCount,
   showNumbers = false
 }: CodeSurferProps) {
-  const fakeSteps = React.useMemo(() => getFakeSteps(steps, tokens), [steps]);
-
   const ref = React.useRef<HTMLDivElement>(null);
   const { dimensions, steps: stepsWithDimensions } = useDimensions(ref, steps);
   if (!dimensions || !stepsWithDimensions) {
     return (
       <div
-        ref={ref}
-        style={{ overflow: "auto", height: "100%", width: "100%" }}
+        style={{
+          height: "100%",
+          position: "relative",
+          width: "100%"
+        }}
       >
-        {fakeSteps.map((_step, i) => (
-          <div
-            key={i}
-            style={{
-              overflow: "auto",
-              height: "100%",
-              width: "100%"
-            }}
-          >
-            <Frame
-              steps={fakeSteps}
-              progress={i}
-              tokens={tokens}
-              types={types}
-              maxLineCount={maxLineCount}
-              showNumbers={showNumbers}
-            />
-          </div>
-        ))}
+        <Frame
+          steps={steps}
+          progress={progress}
+          tokens={tokens}
+          types={types}
+          maxLineCount={maxLineCount}
+          showNumbers={showNumbers}
+        />
+        <div
+          aria-hidden="true"
+          ref={ref}
+          style={{
+            inset: 0,
+            height: "100%",
+            opacity: 0,
+            overflow: "hidden",
+            pointerEvents: "none",
+            position: "absolute",
+            width: "100%"
+          }}
+        >
+          {steps.map((_step, i) => (
+            <div
+              key={i}
+              style={{
+                inset: 0,
+                height: "100%",
+                overflow: "hidden",
+                position: "absolute",
+                width: "100%"
+              }}
+            >
+              <Frame
+                steps={steps}
+                progress={i}
+                tokens={tokens}
+                types={types}
+                maxLineCount={maxLineCount}
+                showNumbers={showNumbers}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   } else {
@@ -69,30 +94,4 @@ export function CodeSurfer({
       </div>
     );
   }
-}
-
-function getFakeSteps(parsedSteps: Step[], tokens: string[][]) {
-  let shortLineKey = 0;
-  let length = 100;
-  for (let i = 1; i < tokens.length; i++) {
-    if (tokens[i].length < length) {
-      length = tokens[i].length;
-      shortLineKey = i;
-    }
-    if (length <= 1) {
-      break;
-    }
-  }
-
-  const fakeSteps = parsedSteps.map(step => {
-    const fakeStep: Step = {
-      ...step,
-      lines: step.lines.map(_ => shortLineKey),
-      longestLineIndex: 0
-    };
-    fakeStep.lines[0] = step.lines[step.longestLineIndex];
-    return fakeStep;
-  });
-  fakeSteps[0] = parsedSteps[0];
-  return fakeSteps;
 }

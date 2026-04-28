@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`tokenizer works 1`] = `
-Object {
-  "tokens": Array [
-    Array [
+exports[`tokenizer > works 1`] = `
+{
+  "tokens": [
+    [
       "console",
       ".",
       "log",
@@ -11,7 +11,7 @@ Object {
       "1",
       ")",
     ],
-    Array [
+    [
       "function",
       " ",
       "x",
@@ -20,18 +20,18 @@ Object {
       " ",
       "{",
     ],
-    Array [
+    [
       "  ",
       "return",
       " ",
-      "\\"foo\\"",
+      ""foo"",
     ],
-    Array [
+    [
       "}",
     ],
   ],
-  "types": Array [
-    Array [
+  "types": [
+    [
       "plain",
       "punctuation",
       "function",
@@ -39,7 +39,7 @@ Object {
       "number",
       "punctuation",
     ],
-    Array [
+    [
       "keyword",
       "plain",
       "function",
@@ -48,13 +48,13 @@ Object {
       "plain",
       "punctuation",
     ],
-    Array [
+    [
       "plain",
       "keyword",
       "plain",
       "string",
     ],
-    Array [
+    [
       "punctuation",
     ],
   ],

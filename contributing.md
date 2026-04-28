@@ -1,9 +1,9 @@
 1. Fork the repo
-2. Install deps: `$ yarn`
-3. Run tests: `$ yarn test`
+2. Install deps: `$ pnpm install`
+3. Run tests: `$ pnpm test`
 
-- Open Storybook: `$ yarn workspace book start`
-- Open docs and demos: `$yarn workspace docs start`
+- Open Storybook: `$ pnpm --filter book start`
+- Open docs and demos: `$ pnpm --filter docs start`
 
   - http://localhost:8000/demo/
   - http://localhost:8000/full/
@@ -12,7 +12,7 @@
   - http://localhost:8000/errors/
 
 - Start the module/s you want to change
-  - `yarn workspace @code-surfer/step-parser start`
-  - `yarn workspace @code-surfer/standalone start`
-  - `yarn workspace @code-surfer/themes start`
-  - `yarn workspace code-surfer start`
+  - `pnpm --filter @code-surfer/step-parser start`
+  - `pnpm --filter @code-surfer/standalone start`
+  - `pnpm --filter @code-surfer/themes start`
+  - `pnpm --filter code-surfer start`

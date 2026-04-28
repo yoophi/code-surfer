@@ -3,8 +3,8 @@
 .pnp.js
 /coverage
 /dist
-/public
 /.cache
+/.astro
 
 npm-debug.log*
 yarn-debug.log*

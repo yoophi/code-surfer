@@ -17,7 +17,7 @@ async function main() {
   fs.ensureDirSync(join(__dirname, "dist"));
 
   // for each site
-  // install dependencies, build and copy to dist
+  // build with the root workspace dependency graph and copy to dist
   const siteBuilds = siteDirNames.map(async siteDirName => {
     console.log(`
 
@@ -27,8 +27,11 @@ async function main() {
     const cwd = join(__dirname, siteDirName);
     const { stdout, stderr } = process;
 
-    execa.commandSync("yarn", { cwd, stdout, stderr });
-    execa.commandSync("yarn build", { cwd, stdout, stderr });
+    execa.commandSync(`pnpm --filter ${siteDirName} build`, {
+      cwd: join(__dirname, ".."),
+      stdout,
+      stderr
+    });
 
     if (fs.existsSync(join(cwd, "dist"))) {
       await fs.copy(join(cwd, "dist"), join(__dirname, "dist", siteDirName));

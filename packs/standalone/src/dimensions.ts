@@ -2,20 +2,25 @@ import React from "react";
 import { Step, Dimensions } from "code-surfer-types";
 import useWindowResize from "./use-window-resize";
 
-type DimensionsResult = { steps?: Step[]; dimensions?: Dimensions };
+type DimensionsResult = {
+  sourceSteps?: Step[];
+  steps?: Step[];
+  dimensions?: Dimensions;
+};
 
 function useDimensions<T extends HTMLElement | null>(
   ref: React.MutableRefObject<T>,
   steps: Step[]
 ): DimensionsResult {
   const [result, setResult] = React.useState<DimensionsResult | null>(null);
+  const currentResult = result && result.sourceSteps === steps ? result : null;
 
   // TODO reset only if container size changed
   useWindowResize(() => setResult(null), [setResult]);
 
   React.useLayoutEffect(() => {
     if (!ref.current) return;
-    if (result) return;
+    if (currentResult) return;
 
     const containers = ref.current.querySelectorAll(
       ".cs-container"
@@ -38,6 +43,7 @@ function useDimensions<T extends HTMLElement | null>(
     const lineHeight = Math.max(...stepsDimensions.map(d => d.lineHeight));
 
     setResult({
+      sourceSteps: steps,
       dimensions: {
         lineHeight,
         contentWidth,
@@ -54,9 +60,9 @@ function useDimensions<T extends HTMLElement | null>(
         }
       }))
     });
-  }, [result]);
+  }, [currentResult, steps]);
 
-  return result || {};
+  return currentResult || {};
 }
 
 function getStepDimensions(container: HTMLElement, step: Step) {
@@ -67,9 +73,8 @@ function getStepDimensions(container: HTMLElement, step: Step) {
   const subtitle = container.querySelector(".cs-subtitle") as HTMLElement;
 
   const lineCount = step.lines.length;
-  const heightOverflow =
-    containerParent.scrollHeight - containerParent.clientHeight;
-  const avaliableHeight = container.scrollHeight - heightOverflow;
+  const availableHeight =
+    containerParent.clientHeight || container.clientHeight || container.scrollHeight;
 
   const lineHeight = longestLineSpan ? longestLineSpan.clientHeight : 0;
   const paddingTop = title ? outerHeight(title) : lineHeight;
@@ -78,7 +83,7 @@ function getStepDimensions(container: HTMLElement, step: Step) {
   const codeHeight = lineCount * lineHeight * 2;
   // const maxContentHeight = codeHeight + paddingTop + paddingBottom;
   // const containerHeight = Math.min(maxContentHeight, avaliableHeight);
-  const containerHeight = avaliableHeight;
+  const containerHeight = availableHeight;
   const containerWidth = container.clientWidth;
   const contentHeight = codeHeight + containerHeight;
 

@@ -1,0 +1,100 @@
+// @ts-check
+
+import React from "react";
+import { CodeSurfer } from "@code-surfer/standalone";
+import { StoryWithSlider } from "./utils";
+
+export default {
+  title: "Basic"
+};
+
+export const Steps = () => <Story />;
+export const ParsedSteps = () => <ParsedStepsStory />;
+export const LineNumbers = () => <StoryWithNumbers />;
+ParsedSteps.storyName = "Parsed Steps";
+LineNumbers.storyName = "Line Numbers";
+
+function Story() {
+  return (
+    <StoryWithSlider max={steps.length - 1}>
+      {progress => <CodeSurfer progress={progress} steps={steps} />}
+    </StoryWithSlider>
+  );
+}
+
+function ParsedStepsStory() {
+  return (
+    <StoryWithSlider max={parsedSteps.steps.length - 1}>
+      {progress => <CodeSurfer progress={progress} parsedSteps={parsedSteps} />}
+    </StoryWithSlider>
+  );
+}
+function StoryWithNumbers() {
+  return (
+    <StoryWithSlider max={stepsWithNumbers.length - 1}>
+      {progress => <CodeSurfer progress={progress} steps={stepsWithNumbers} />}
+    </StoryWithSlider>
+  );
+}
+
+const steps = [
+  {
+    code: `var x1 = 1
+debugger`,
+    focus: "1",
+    lang: "js"
+  },
+  {
+    code: `var x0 = 3
+var x1 = 1
+var x0 = 3`,
+    lang: "js"
+  }
+];
+const parsedSteps = {
+  steps: [
+    {
+      lines: [1, 3],
+      focus: { "0": true },
+      focusCenter: 0.5,
+      focusCount: 1,
+      longestLineIndex: 0
+    },
+    {
+      lines: [0, 1, 2],
+      focus: { "0": true, "2": true },
+      focusCenter: 1.5,
+      focusCount: 3,
+      longestLineIndex: 0
+    }
+  ],
+  tokens: [
+    ["var", " x0 ", "=", " ", "3"],
+    ["var", " x1 ", "=", " ", "1"],
+    ["var", " x0 ", "=", " ", "3"],
+    ["debugger"]
+  ],
+  types: [
+    ["keyword", "plain", "operator", "plain", "number"],
+    ["keyword", "plain", "operator", "plain", "number"],
+    ["keyword", "plain", "operator", "plain", "number"],
+    ["keyword"]
+  ],
+  maxLineCount: 4
+};
+
+const stepsWithNumbers = [
+  {
+    code: `var x1 = 1
+debugger`,
+    focus: "1",
+    lang: "js",
+    showNumbers: true
+  },
+  {
+    code: `var x0 = 3
+var x1 = 1
+var x0 = 3`,
+    lang: "js"
+  }
+];

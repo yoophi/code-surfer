@@ -18,7 +18,7 @@
 
 - 라이브러리 패키지(`packs/*`)와 사이트 패키지(`sites/*`)를 한 번에 올릴지, 라이브러리부터 먼저 안정화할지 결정한다.
 - TSDX를 계속 사용할 수 있는지 검토하고, 불가능하거나 유지 비용이 높으면 `tsup` 또는 Rollup 기반 빌드로 전환한다.
-- 현재 Yarn v1 workspaces를 유지할지, lockfile 재생성만 할지 결정한다.
+- Yarn v1 workspaces는 제거하고, `pnpm-workspace.yaml` 기반 pnpm workspace로 전환한다.
 - React peer dependency 정책을 정한다.
   - 라이브러리 패키지는 React를 직접 번들링하지 않는다.
   - `peerDependencies`는 React 18과 19를 함께 허용할지, React 19 중심으로 제한할지 결정한다.
@@ -27,15 +27,18 @@
 ## 3. 라이브러리 패키지 업그레이드
 
 - `@code-surfer/step-parser`
+
   - React 의존성이 없는 핵심 파서 패키지로 먼저 빌드 체인을 현대화한다.
   - TypeScript 버전 업그레이드 후 타입 오류와 테스트 실패를 정리한다.
 
 - `@code-surfer/themes`
+
   - React 19 타입과 `theme-ui` 호환성을 확인한다.
   - `peerDependencies`와 타입 패키지를 갱신한다.
   - 스타일 컴포넌트가 최신 JSX/React 타입에서 정상 빌드되는지 확인한다.
 
 - `@code-surfer/standalone`
+
   - React 19 개발 의존성으로 빌드와 테스트를 실행한다.
   - animation, frame, dimensions, window resize 관련 hook이 Strict Mode와 최신 React에서 문제없는지 확인한다.
   - DOM 측정 로직과 `useLayoutEffect` 사용 위치를 점검한다.
@@ -56,12 +59,14 @@
 ## 5. 사이트 패키지 업그레이드
 
 - `sites/book`
+
   - Storybook 5 기반 구성을 최신 Storybook으로 올리거나, 유지가 어렵다면 최소 동작 가능한 예제 실행 환경으로 재구성한다.
   - React 19와 `theme-ui` 최신 버전에서 standalone 컴포넌트 예제가 렌더링되는지 확인한다.
 
 - `sites/docs`
-  - Gatsby 2, `gatsby-theme-mdx-deck`, `mdx-deck` 조합의 React 19 호환성을 검토한다.
-  - 호환이 어렵다면 문서 사이트를 최신 Gatsby/MDX 구성으로 올리거나 별도 현대화 경로를 제안한다.
+  - Gatsby 2, `gatsby-theme-mdx-deck`, `mdx-deck` 조합은 React 19/최신 Node와 호환성이 낮으므로 제거한다.
+  - Astro + MDX + React island 기반 문서 사이트로 전환한다.
+  - 기존 MDX Deck deck 파일은 빌드 대상에서 제외하고, 유지 가능한 문서 코드 스니펫과 React 기반 live preview로 재구성한다.
   - 문서 빌드가 라이브러리 패키지의 workspace 버전을 참조하도록 정리한다.
 
 ## 6. 코드 수정
@@ -71,38 +76,43 @@
 - Strict Mode에서 effect가 두 번 실행되어도 깨지지 않도록 side effect와 cleanup을 점검한다.
 - 오래된 polyfill이나 런타임 보조 패키지가 최신 빌드 대상에서 계속 필요한지 확인하고 제거 가능한 것은 제거한다.
 
-## 7. 의존성 및 lockfile 정리
+## 7. pnpm workspace 및 lockfile 정리
 
+- 루트 `package.json`의 Yarn workspace 선언을 제거하고 `pnpm-workspace.yaml`에 `packs/*`, `sites/*`를 등록한다.
 - 루트와 workspace의 중복 devDependency를 줄인다.
 - React, React DOM, React 타입, TypeScript, Jest, 빌드 도구 버전을 일관되게 맞춘다.
-- `yarn.lock`을 재생성하고 설치가 재현 가능한지 확인한다.
+- 루트 스크립트, `sites/build.js`, Netlify 명령, 기여 문서를 pnpm 명령으로 갱신한다.
+- `yarn.lock`과 하위 Yarn lockfile을 제거하고 `pnpm-lock.yaml`을 생성해 설치가 재현 가능한지 확인한다.
 - peer dependency 경고와 deprecated 패키지 경고를 검토하여 남길 항목과 해결할 항목을 구분한다.
 
 ## 8. 검증
 
 - 루트 설치 검증
-  - `yarn install`
+
+  - `pnpm install`
 
 - 라이브러리 빌드 검증
-  - `yarn build:step-parser`
-  - `yarn build:themes`
-  - `yarn build:standalone`
-  - `yarn build:codesurfer`
+
+  - `pnpm build:step-parser`
+  - `pnpm build:themes`
+  - `pnpm build:standalone`
+  - `pnpm build:codesurfer`
 
 - 테스트 검증
-  - `yarn test:step-parser`
-  - `yarn test:themes`
-  - `yarn test:standalone`
-  - `yarn test:codesurfer`
+
+  - `pnpm test:step-parser`
+  - `pnpm test:themes`
+  - `pnpm test:standalone`
+  - `pnpm test:codesurfer`
 
 - 사이트 검증
-  - `yarn workspace book build`
-  - `yarn workspace docs build`
+  - `pnpm --filter book build`
+  - `pnpm --filter docs build`
   - 필요한 경우 개발 서버 실행 후 주요 예제 렌더링 확인
 
 ## 9. 완료 기준
 
-- React 19 환경에서 workspace 설치가 성공한다.
+- React 19 환경에서 pnpm workspace 설치가 성공한다.
 - 라이브러리 패키지의 빌드 산출물이 생성된다.
 - 기존 테스트가 통과하거나, 실패 사유와 보완 계획이 명확히 기록된다.
 - 문서/예제 사이트가 빌드 또는 개발 서버 기준으로 실행 가능하다.
@@ -114,7 +124,7 @@
 1. 의존성 현황과 React 19 위험 지점을 조사한다.
 2. `step-parser`부터 빌드 체인을 현대화한다.
 3. `themes`, `standalone`, `code-surfer` 순서로 React 19 타입과 런타임 호환성을 맞춘다.
-4. 루트 빌드/테스트 스크립트를 새 도구 체인에 맞게 정리한다.
-5. `sites/book`과 `sites/docs`를 최신 React 조합에서 동작하도록 갱신한다.
-6. 전체 install, build, test, site build를 실행하고 실패를 해결한다.
+4. 루트 빌드/테스트 스크립트를 새 도구 체인과 pnpm workspace에 맞게 정리한다.
+5. `sites/book`은 Storybook/Vite로, `sites/docs`는 Astro/MDX/React island로 갱신한다.
+6. 전체 install, build, test, site build를 pnpm으로 실행하고 실패를 해결한다.
 7. lockfile과 문서를 정리한 뒤 최종 상태를 커밋한다.

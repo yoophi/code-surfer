@@ -1,0 +1,68 @@
+// @ts-check
+
+import React from "react";
+import { CodeSurfer } from "@code-surfer/standalone";
+import { StoryWithSlider } from "./utils";
+
+export default {
+  title: "Title & Subtitle"
+};
+
+export const Title = () => <TitleStory />;
+export const Subtitle = () => <SubtitleStory />;
+export const FitCode = () => <ZoomStory />;
+FitCode.storyName = "Fit Code";
+
+const code = `var x0 = 3
+var x1 = 1
+var x0 = 3`;
+
+function TitleStory() {
+  const steps = [
+    { code, title: "Title 1", lang: "js" },
+    { code, title: "Title 2" },
+    { code, title: "Title 2" },
+    { code },
+    { code, title: "Title 3" }
+  ];
+  return (
+    <StoryWithSlider max={steps.length - 1}>
+      {progress => <CodeSurfer progress={progress} steps={steps} />}
+    </StoryWithSlider>
+  );
+}
+function SubtitleStory() {
+  const steps = [
+    { code, subtitle: "Subtitle 1", lang: "js" },
+    { code, subtitle: "Subtitle 2" },
+    { code, subtitle: "Subtitle 2" },
+    { code },
+    { code, subtitle: "Subtitle 3" }
+  ];
+  return (
+    <StoryWithSlider max={steps.length - 1}>
+      {progress => <CodeSurfer progress={progress} steps={steps} />}
+    </StoryWithSlider>
+  );
+}
+
+function ZoomStory() {
+  const fiveLines = `
+console.log(1)
+console.log(1)
+console.log(1)
+console.log(1)
+console.log(1)`;
+  const code = (fiveLines + fiveLines + fiveLines).trim();
+  const steps = [
+    { code, title: "title 1", subtitle: "Subtitle 1", lang: "js" },
+    { code, subtitle: "Subtitle 2" },
+    { code, title: "title 2" },
+    { code }
+  ];
+  return (
+    <StoryWithSlider max={steps.length - 1}>
+      {progress => <CodeSurfer progress={progress} steps={steps} />}
+    </StoryWithSlider>
+  );
+}

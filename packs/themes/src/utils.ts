@@ -1,11 +1,13 @@
-import { SxStyleProp, Theme } from "theme-ui";
+import { Theme, ThemeUIStyleObject } from "theme-ui";
+
+type CodeSurferStyleProp = ThemeUIStyleObject | Record<string, any>;
 
 export type CodeSurferStyles = {
-  title: SxStyleProp;
-  subtitle: SxStyleProp;
-  code: SxStyleProp;
-  pre: SxStyleProp;
-  tokens: Record<string, SxStyleProp>;
+  title: CodeSurferStyleProp;
+  subtitle: CodeSurferStyleProp;
+  code: CodeSurferStyleProp;
+  pre: CodeSurferStyleProp;
+  tokens: Record<string, CodeSurferStyleProp>;
   unfocused?: {
     opacity: number;
   };
@@ -13,7 +15,7 @@ export type CodeSurferStyles = {
 
 type StyleItem = {
   types: string[];
-  style: SxStyleProp;
+  style: CodeSurferStyleProp;
 };
 
 export type PrismTheme = {
@@ -21,15 +23,15 @@ export type PrismTheme = {
   styles: StyleItem[];
 };
 
-export type CodeSurferTheme = Theme & {
-  styles?: { CodeSurfer?: CodeSurferStyles };
+export type CodeSurferTheme = Omit<Theme, "styles"> & {
+  styles?: Record<string, any> & { CodeSurfer?: CodeSurferStyles };
 };
 
 export function makeTheme(
   prismTheme: PrismTheme,
   override: Partial<CodeSurferStyles> = {}
 ): CodeSurferTheme {
-  const tokens = {} as Record<string, SxStyleProp>;
+  const tokens = {} as Record<string, CodeSurferStyleProp>;
   prismTheme.styles.forEach(s => {
     tokens[s.types.join(" ")] = s.style;
   });
@@ -64,7 +66,7 @@ export function makeTheme(
   };
 
   const stringStyle = prismTheme.styles.find(s => s.types.includes("string"));
-  const primary = stringStyle && (stringStyle.style.color as string);
+  const primary = stringStyle && ((stringStyle.style as any).color as string);
   if (theme.colors && primary) {
     theme.colors.primary = primary;
   }

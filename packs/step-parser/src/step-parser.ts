@@ -119,13 +119,16 @@ function getCodeList(
     return inputSteps.map(s => s.code);
   }
 
-  let prevCode = "";
-  return inputSteps.map(({ code, lang }) => {
-    let stepCode = lang === "diff" ? applyPatch(prevCode, code) : code;
-    prevCode = stepCode;
-    return stepCode;
-  });
-}
+	  let prevCode = "";
+	  return inputSteps.map(({ code, lang }) => {
+	    let stepCode = lang === "diff" ? applyPatch(prevCode, code) : code;
+	    if (stepCode === false) {
+	      throw new Error("Invalid diff step");
+	    }
+	    prevCode = stepCode;
+	    return stepCode;
+	  });
+	}
 
 function splitIntoColumns(
   types: string[],

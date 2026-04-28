@@ -1,23 +1,24 @@
 {
   "name": "book",
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "start-storybook -c ./src",
-    "build": "build-storybook -c ./src -o ./dist"
+    "start": "storybook dev",
+    "build": "storybook build -o ./dist"
   },
   "dependencies": {
-    "@code-surfer/standalone": "3.1.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "theme-ui": "^0.2.41",
-    "use-spring": "^0.2.2"
+    "@code-surfer/standalone": "workspace:*",
+    "@code-surfer/themes": "workspace:*",
+    "@emotion/react": "^11.14.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "theme-ui": "^0.17.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@storybook/react": "^5.1.9",
-    "babel-loader": "^8.0.6",
-    "raw-loader": "^3.1.0"
+    "@storybook/react-vite": "^10.3.5",
+    "storybook": "^10.3.5",
+    "vite": "^7.0.2"
   }
 }
